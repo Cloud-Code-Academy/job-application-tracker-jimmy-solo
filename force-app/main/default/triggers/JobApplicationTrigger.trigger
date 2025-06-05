@@ -1,5 +1,5 @@
-trigger JobApplicationTrigger on Job_Application__c (before update) {
+trigger JobApplicationTrigger on Job_Application__c (after insert) {
 
-    //Add orchestration details
-    
+    //Creating a new instance of our job application trigger handler and calling run.
+    new JobApplicationTriggerHandler().run();
 }
