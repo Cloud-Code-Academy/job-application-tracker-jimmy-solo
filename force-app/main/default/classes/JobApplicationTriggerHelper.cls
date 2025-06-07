@@ -13,7 +13,7 @@ public with sharing class JobApplicationTriggerHelper {
                 for (String subject : subjectList) {
                     Task task = new Task(
                         Subject = subject,
-                        OwnerId = app.Owner.Id,
+                        OwnerId = app.OwnerId,
                         ActivityDate = Date.today().addDays(3),
                         WhatId = app.Id
                     );
@@ -27,6 +27,27 @@ public with sharing class JobApplicationTriggerHelper {
         } catch (Exception ex) {
             System.debug(ex);
         }
+    }
 
+    public static void createTasksForJobApplicationStatusUpdate(Map<Id, Job_Application__c> jobApplicationNewMap, List<String> subjectList){
+
+        List<Task> taskList = new List<Task>();
+
+        for (Job_Application__c app : jobApplicationNewMap.values()) {
+            for (String subject : subjectList) {
+                Task task = new Task(
+                    Subject = subject,
+                    OwnerId = app.OwnerId,
+                    ActivityDate = Date.today().addDays(3),
+                    WhatId = app.Id
+                );
+                taskList.add(task);
+            }
+        }
+        try {
+            Database.insert(taskList, true);
+        } catch (Exception ex) {
+            System.debug(ex);
+        }
     }
 }
