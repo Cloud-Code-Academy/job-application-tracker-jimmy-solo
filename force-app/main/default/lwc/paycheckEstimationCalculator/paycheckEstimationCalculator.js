@@ -13,4 +13,6 @@ export default class PaycheckEstimationCalculator extends LightningElement {
         return this.jobApplication?.data?.fields?.Salary__c?.value;
     }
 
+    
+
 }
