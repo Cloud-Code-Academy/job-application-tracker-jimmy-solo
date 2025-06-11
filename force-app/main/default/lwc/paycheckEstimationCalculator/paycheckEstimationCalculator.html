@@ -1,17 +1,25 @@
 <template>
     <lightning-card title="PAYCHECK ESTIMATOR">
         <lightning-layout>
-            <lightning-layout-item padding="around-medium" size="3">
+            <lightning-layout-item padding="around-medium" size="4">
                 <lightning-input label="Salary" value={formattedSalaryAmount} read-only></lightning-input>
             </lightning-layout-item>
-            <lightning-layout-item padding="around-medium" size="3">
-                <lightning-input label="Federal Tax Rate" value={federalTaxRatePercent} read-only></lightning-input>
+            <lightning-layout-item padding="around-medium" size="4">
+                <lightning-input label="Monthly Paycheck" value={formattedMonthlySalaryValue} read-only></lightning-input>
             </lightning-layout-item>
-            <lightning-layout-item padding="around-medium" size="3">
-                <lightning-input label="Monthly Estimated Paycheck" value={formattedMonthlySalaryValue} read-only></lightning-input>
-            </lightning-layout-item>
-            <lightning-layout-item padding="around-medium" size="3">
+            <lightning-layout-item padding="around-medium" size="4">
                 <lightning-input label="Yearly Estimated Salary" value={formattedYearlyEstimatedSalary} read-only></lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout>
+            <lightning-layout-item padding="around-medium" size="4">
+                <lightning-input label="Federal Liability (yearly)" value={formattedYearlyFederalTaxLiability} read-only></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-medium" size="4">
+                <lightning-input label="Soc Sec Liability (yearly)" value={formattedYearlySSLiability} read-only></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-medium" size="4">
+                <lightning-input label="Medicare Liability (yearly)" value={formattedYearlyMedicareLiability} read-only></lightning-input>
             </lightning-layout-item>
         </lightning-layout>
     </lightning-card>
