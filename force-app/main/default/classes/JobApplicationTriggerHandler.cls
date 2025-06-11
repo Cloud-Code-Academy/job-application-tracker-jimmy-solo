@@ -48,11 +48,13 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
 
     @TestVisible
     public override void afterInsert(){
+        List<Job_Application__c> savedJobApps = new List<Job_Application__c>();
         for (Job_Application__c jobApp : this.jobApplicationNewMap.values()) {
             if (jobApp.Status__c == 'Saved') {
-                JobApplicationTriggerHelper.createTasksForSavedJobStatus(this.jobApplicationNewMap);
+                savedJobApps.add(jobApp);
             }
         }
+        JobApplicationTriggerHelper.createTasksForSavedJobStatus(savedJobApps);
     }
 
     @TestVisible
@@ -76,5 +78,16 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
                 continue;
             }
         }
+        evaluatePrimaryContactValue();
+    }
+
+    private void evaluatePrimaryContactValue(){
+        Map<Id, Job_Application__c> jobAppsWithNullPrimaryContactMap = new Map<Id, Job_Application__c>();
+        for (Job_Application__c jobApp : this.jobApplicationNewMap.values()) {
+            if (jobApp.Primary_Contact__c == null) {
+                jobAppsWithNullPrimaryContactMap.put(jobApp.Id, jobApp);
+            }
+        }
+        JobApplicationTriggerHelper.populatePrimaryContactIfNull(jobAppsWithNullPrimaryContactMap);
     }
 }

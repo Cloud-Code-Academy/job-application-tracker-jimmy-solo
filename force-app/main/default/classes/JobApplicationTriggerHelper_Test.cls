@@ -164,4 +164,30 @@ public with sharing class JobApplicationTriggerHelper_Test {
         List<Task> taskListExpectingSixItems = [ SELECT Id FROM Task ];
         Assert.areEqual(5, taskListExpectingSixItems.size(), 'We expected 5 total tasks to be created during a job application update to a status of Accepted');
     }
+
+    @IsTest 
+    public static void populatePrimaryContactOnJobApplicationWhenNull_ExpectToPopulateWithAnyRelatedContact(){
+        
+        Job_Application__c testJobApp1 = new Job_Application__c(
+            Name = 'Test Job Application 1'
+        );
+        Database.insert(testJobApp1);
+        
+        Contact testContact1 = new Contact(
+            FirstName = 'Jonny',
+            LastName = 'Jonnison',
+            Job_Application__c = testJobApp1.Id
+        );
+        Database.insert(testContact1);
+
+        Test.startTest();
+            testJobApp1.Location__c = 'Remote';
+            Database.update(testJobApp1);
+        Test.stopTest();
+
+        List<Job_Application__c> jobApplicationAssertionList = [ SELECT Id, Name, Primary_Contact__c 
+                                                                    FROM Job_Application__c 
+                                                                    WHERE Name = 'Test Job Application 1' ];
+        Assert.isNotNull(jobApplicationAssertionList[0].Primary_Contact__c, 'We expect the Primary Contact field to be populated with a related contact, if available.');
+    }
 }
