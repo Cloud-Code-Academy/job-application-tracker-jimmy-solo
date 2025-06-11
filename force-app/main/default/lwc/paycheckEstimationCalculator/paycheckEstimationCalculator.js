@@ -38,7 +38,7 @@ export default class PaycheckEstimationCalculator extends LightningElement {
         return this.yearlyEstimatedPaycheck / 12;
     }
     get formattedYearlyEstimatedSalary(){
-        return '$' + new Intl.NumberFormat('en-US').format(this.salary - (this.salary * this.federalTaxRateDecimal));
+        return '$' + new Intl.NumberFormat('en-US').format(this.salary - this.totalTaxLiability);
     }
     get totalTaxLiability(){
         return (this.salary * this.federalTaxRateDecimal) + (this.salary * SOCIAL_SECURITY_RATE) + (this.salary * MEDICARE_TAX_RATE);

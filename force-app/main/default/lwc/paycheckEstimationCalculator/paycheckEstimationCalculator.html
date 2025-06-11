@@ -2,13 +2,13 @@
     <lightning-card title="PAYCHECK ESTIMATOR">
         <lightning-layout>
             <lightning-layout-item padding="around-medium" size="4">
-                <lightning-input label="Salary" value={formattedSalaryAmount} read-only></lightning-input>
+                <lightning-input label="Salary (gross)" value={formattedSalaryAmount} read-only></lightning-input>
             </lightning-layout-item>
             <lightning-layout-item padding="around-medium" size="4">
-                <lightning-input label="Monthly Paycheck" value={formattedMonthlySalaryValue} read-only></lightning-input>
+                <lightning-input label="Monthly Paycheck (net)" value={formattedMonthlySalaryValue} read-only></lightning-input>
             </lightning-layout-item>
             <lightning-layout-item padding="around-medium" size="4">
-                <lightning-input label="Yearly Estimated Salary" value={formattedYearlyEstimatedSalary} read-only></lightning-input>
+                <lightning-input label="Yearly Estimated Salary (net)" value={formattedYearlyEstimatedSalary} read-only></lightning-input>
             </lightning-layout-item>
         </lightning-layout>
         <lightning-layout>
@@ -20,6 +20,7 @@
             </lightning-layout-item>
             <lightning-layout-item padding="around-medium" size="4">
                 <lightning-input label="Medicare Liability (yearly)" value={formattedYearlyMedicareLiability} read-only></lightning-input>
+                <p>{totalTaxLiability}</p>
             </lightning-layout-item>
         </lightning-layout>
     </lightning-card>
