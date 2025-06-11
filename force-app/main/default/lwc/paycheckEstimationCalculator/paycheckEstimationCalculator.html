@@ -1,10 +1,18 @@
 <template>
-        <lightning-card  title="PAYCHECK ESTIMATOR">
-            <lightning-layout>
-                <lightning-layout-item padding="around-medium" size="3">Salary: {salary}</lightning-layout-item>
-                <lightning-layout-item padding="around-medium" size="3">Salary: {salary}</lightning-layout-item>
-                <lightning-layout-item padding="around-medium" size="3">Salary: {salary}</lightning-layout-item>
-                <lightning-layout-item padding="around-medium" size="3">Salary: {salary}</lightning-layout-item>
-            </lightning-layout>
-        </lightning-card>
+    <lightning-card title="PAYCHECK ESTIMATOR">
+        <lightning-layout>
+            <lightning-layout-item padding="around-medium" size="3">
+                <lightning-input label="Salary" value={formattedSalaryAmount} read-only></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-medium" size="3">
+                <lightning-input label="Federal Tax Rate" value={federalTaxRatePercent} read-only></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-medium" size="3">
+                <lightning-input label="Monthly Estimated Paycheck" value={formattedMonthlySalaryValue} read-only></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-medium" size="3">
+                <lightning-input label="Yearly Estimated Salary" value={formattedYearlyEstimatedSalary} read-only></lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
 </template>
