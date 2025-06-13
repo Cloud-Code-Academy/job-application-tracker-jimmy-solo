@@ -2,7 +2,7 @@ public without sharing class JobApplicationRecordCleanupSchedulable implements S
 
     public void execute(SchedulableContext sc){
         //Establishing our cutoff date for record cleanup.
-        Datetime thirtyDaysAgo = Datetime.now().addDays(-1);
+        Datetime thirtyDaysAgo = Datetime.now().addDays(-30);
 
         //Query job application records older than 30 days.
         List<Job_Application__c> expiredJobApplicationsList = queryJobApplicationsOlderThan30Days(thirtyDaysAgo);
