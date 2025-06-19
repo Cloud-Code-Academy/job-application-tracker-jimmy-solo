@@ -1,4 +1,4 @@
-public with sharing class JoobleJobCalloutBatchable implements Database.Batchable<Job_Application__c> {
+public without sharing class JoobleJobCalloutBatchable implements Database.Batchable<Job_Application__c> {
 
     private List<Job_Application__c> jobList;
 
@@ -12,7 +12,18 @@ public with sharing class JoobleJobCalloutBatchable implements Database.Batchabl
 
     public void execute(Database.BatchableContext bc, List<Job_Application__c> scope) {
         //Here we're inserting our job application records we built in our Queueable class.
-        insert scope;
+        Database.SaveResult[] results = Database.insert(scope, false);
+        for (Integer i = 0; i < results.size(); i++) {
+            if (!results[i].isSuccess()) {
+                System.debug('Failed record: ' + scope[i]);
+                for (Database.Error err : results[i].getErrors()) {
+                    System.debug('Error message: ' + err.getMessage());
+                }
+            } else {
+                System.debug('Inserted record: ' + scope[i]);
+            }
+        }
+
     }
 
     public void finish(Database.BatchableContext bc) {

@@ -1,10 +1,14 @@
-public with sharing class JoobleJobCalloutQueueable implements Queueable {
+public without sharing class JoobleJobCalloutQueueable implements Queueable, Database.AllowsCallouts {
 
     public void execute(QueueableContext qc){
         
         try {
             HttpRequest request = new HttpRequest();
-            request.setEndpoint('https://jooble.org/api/43df291b-956f-48de-86f9-fa8d7f78d359');
+            Jooble_API_Credential__mdt joobleAPIKey = [ SELECT Jooble_API_Key__c 
+                                                        FROM Jooble_API_Credential__mdt 
+                                                        WHERE DeveloperName = 'Jooble_API_Credential_Capstone_Project'];
+
+            request.setEndpoint('https://jooble.org/api/' + joobleAPIKey);
             request.setMethod('POST');
             request.setHeader('Content-Type', 'application/json');
 
@@ -24,12 +28,13 @@ public with sharing class JoobleJobCalloutQueueable implements Queueable {
 
                     //Prepare a clean list and instantiate a new job application record to capture returned field values.
                     List<Job_Application__c> cleanJobApplicationList = new List<Job_Application__c>();
-                    Job_Application__c jobApplicationRecord = new Job_Application__c();
-
+                    
                     for(Object returnedJob : jobResultList) {
+                        Job_Application__c jobApplicationRecord = new Job_Application__c();
+
                         Map<String, Object> jobMap = (Map<String, Object>) returnedJob;
+                        jobApplicationRecord.Name = 'Job App ' + '- ' + (String)jobMap.get('company') + '- ' + Datetime.now().format('MM d, yyyy');
                         jobApplicationRecord.Position_Title__c = (String)jobMap.get('title');
-                        jobApplicationRecord.Location__c = (String)jobMap.get('location');
                         jobApplicationRecord.Description__c = (String)jobMap.get('snippet');
 
                         //Here we're stripping non-numeric values and then casting to a decimal.
@@ -37,25 +42,26 @@ public with sharing class JoobleJobCalloutQueueable implements Queueable {
                         if (rawSalary != null && rawSalary != '') {
                             // Remove non-numeric characters like $, commas, etc.
                             rawSalary = rawSalary.replaceAll('[^\\d.]', '');
-
                             if (rawSalary != '') {
                                 try {
                                     jobApplicationRecord.Salary__c = Decimal.valueOf(rawSalary);
                                 } catch (Exception e) {
-                                    System.debug('Could not convert salary to decimal: ' + rawSalary);
+                                    System.debug('Could not convert salary to decimal: ' + jobApplicationRecord);
                                 }
                             }
                         }
                         jobApplicationRecord.URL__c = (String)jobMap.get('link');
                         jobApplicationRecord.Company_Name__c = (String)jobMap.get('company');
-                        jobApplicationRecord.Location__c = (String)jobMap.get('location');
-                        jobApplicationRecord.Jooble_External_Id__c = (String)jobMap.get('id');
+                        jobApplicationRecord.Company_Location__c = (String)jobMap.get('location');
+                        jobApplicationRecord.Jooble_External_Id__c = String.valueOf(jobMap.get('id'));
+                        jobApplicationRecord.Status__c = 'Saved';
 
                         cleanJobApplicationList.add(jobApplicationRecord);
                     }
+                    System.debug(JSON.serializePretty('CLEANLIST SIZE::::::::::: ' + cleanJobApplicationList.size()));
                     //Creating a new instance of our batchable class to chunk the insert transactions in groups of 200.
                     Database.executeBatch(new JoobleJobCalloutBatchable(cleanJobApplicationList), 200);
-                    System.debug(JSON.serializePretty(cleanJobApplicationList));
+                    
 
                 } else {
                     System.debug('No jobs key found in response.');
