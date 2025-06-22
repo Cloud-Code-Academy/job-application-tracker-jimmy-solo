@@ -4,22 +4,25 @@ public without sharing class JoobleJobCalloutQueueable implements Queueable, Dat
         
         try {
             HttpRequest request = new HttpRequest();
+
+            //Retrieve our Jooble API Key for our callouts.
             Jooble_API_Credential__mdt joobleAPIKey = [ SELECT Jooble_API_Key__c 
                                                         FROM Jooble_API_Credential__mdt 
                                                         WHERE DeveloperName = 'Jooble_API_Credential_Capstone_Project'];
 
-            request.setEndpoint('https://jooble.org/api/' + joobleAPIKey);
+            request.setEndpoint('https://jooble.org/api/' + joobleAPIKey.Jooble_API_Key__c);
             request.setMethod('POST');
             request.setHeader('Content-Type', 'application/json');
 
+            //Here we're building our search parameters to pass as part of our POST request.
             Map<String, String> requestBodyMap = new Map<String, String>();
             requestBodyMap.put('keywords', 'Salesforce Developer');
             requestBodyMap.put('location', 'Boulder, Colorado');
             request.setBody(JSON.serialize(requestBodyMap));
 
+            //Here we're sending our HTTP request.
             Http http = new Http();
             HttpResponse response = http.send(request);
-
             if (response.getStatusCode() == 200) {
                 Map<String, Object> result = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
 
@@ -28,7 +31,6 @@ public without sharing class JoobleJobCalloutQueueable implements Queueable, Dat
 
                     //Prepare a clean list and instantiate a new job application record to capture returned field values.
                     List<Job_Application__c> cleanJobApplicationList = new List<Job_Application__c>();
-                    
                     for(Object returnedJob : jobResultList) {
                         Job_Application__c jobApplicationRecord = new Job_Application__c();
 
@@ -56,9 +58,10 @@ public without sharing class JoobleJobCalloutQueueable implements Queueable, Dat
                         jobApplicationRecord.Jooble_External_Id__c = String.valueOf(jobMap.get('id'));
                         jobApplicationRecord.Status__c = 'Saved';
 
-                        cleanJobApplicationList.add(jobApplicationRecord);
+                        if (!checkIfJobApplicationIsADuplicate(jobApplicationRecord)) {
+                            cleanJobApplicationList.add(jobApplicationRecord);
+                        }
                     }
-                    System.debug(JSON.serializePretty('CLEANLIST SIZE::::::::::: ' + cleanJobApplicationList.size()));
                     //Creating a new instance of our batchable class to chunk the insert transactions in groups of 200.
                     Database.executeBatch(new JoobleJobCalloutBatchable(cleanJobApplicationList), 200);
                     
@@ -72,5 +75,13 @@ public without sharing class JoobleJobCalloutQueueable implements Queueable, Dat
         }catch (exception e) {
             System.debug('Exception during callout: ' + e.getMessage());
         }
+    }
+
+    public Boolean checkIfJobApplicationIsADuplicate(Job_Application__c jobApplication){
+        List<Job_Application__c> jobApplicationList = [ SELECT Id, Jooble_External_Id__c 
+                                                        FROM Job_Application__c
+                                                        WHERE Jooble_External_Id__c = :jobApplication.Jooble_External_Id__c ];
+
+        return jobApplicationList.isEmpty() ? false : true;
     }
 }

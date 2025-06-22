@@ -5,6 +5,7 @@
 // You can also execute the entire file by running the command:
 //     SFDX: Execute Anonymous Apex with Editor Contents
 
-string tempvar = 'Enter_your_name_here';
-System.debug('Hello World!');
-System.debug('My name is ' + tempvar);
+// String jobName = 'Jooble_Job_API_Callout_Scheduled_Job';
+// String cronExp = '0 40 11 * * ?'; 
+// JoobleJobCalloutSchedulable joobleJob = new JoobleJobCalloutSchedulable();
+// System.schedule(jobName, cronExp, joobleJob);
