@@ -2,7 +2,7 @@
     <lightning-card title="PAYCHECK ESTIMATOR">
         <lightning-layout>
             <lightning-layout-item padding="around-medium" size="4">
-                <lightning-input label="Salary (gross)" value={formattedSalaryAmount} read-only></lightning-input>
+                <lightning-input label="Salary From Job Posting OR Enter A Custom Value" value={userInputSalaryFormatted} onchange={handleSalaryChange}></lightning-input>
             </lightning-layout-item>
             <lightning-layout-item padding="around-medium" size="4">
                 <lightning-input label="Monthly Paycheck (net)" value={formattedMonthlySalaryValue} read-only></lightning-input>
@@ -20,6 +20,17 @@
             </lightning-layout-item>
             <lightning-layout-item padding="around-medium" size="4">
                 <lightning-input label="Medicare Liability (yearly)" value={formattedYearlyMedicareLiability} read-only></lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout>
+            <lightning-layout-item padding="around-medium" size="4">
+                <lightning-input label="Weekly Paycheck" value={formattedweeklyEstimatedSalary} read-only></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-medium" size="4">
+                <lightning-input label="Bi-Weekly Paycheck" value={formattedBiWeeklyEstimatedSalary} read-only></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-medium" size="4">
+                <lightning-input label="6 Month Paycheck" value={formattedSixMonthEstimatedSalary} read-only></lightning-input>
             </lightning-layout-item>
         </lightning-layout>
     </lightning-card>
