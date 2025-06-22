@@ -14,9 +14,9 @@ public with sharing class JoobleJobCallout_Test {
                                                             WHERE Company_Name__c = 'Tech Co'];
         
         Assert.areEqual(mockJobApplicationList.size(), 1);
-        Assert.areEqual(mockJobApplicationList[0].Company_Name__c, 'Tech Co');
-        Assert.areEqual(mockJobApplicationList[0].Company_Location__c, 'Boulder, CO');
-        Assert.areEqual(mockJobApplicationList[0].Salary__c, 100000);
-        Assert.areEqual(mockJobApplicationList[0].Position_Title__c, 'Salesforce Developer');
+        Assert.areEqual(mockJobApplicationList[0].Company_Name__c, 'Tech Co', 'Expected Tech Co as the company name.');
+        Assert.areEqual(mockJobApplicationList[0].Company_Location__c, 'Boulder, CO', 'Expected Boulder CO as the location.');
+        Assert.areEqual(mockJobApplicationList[0].Salary__c, 100000, 'Expected 100000 as the salary.');
+        Assert.areEqual(mockJobApplicationList[0].Position_Title__c, 'Salesforce Developer', 'Expected Salesforce Developer as the position title.');
     }
 }
