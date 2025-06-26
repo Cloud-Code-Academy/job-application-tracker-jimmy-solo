@@ -36,7 +36,6 @@ public without sharing class JobInterviewReminderEmailSchedulable implements Sch
     }
 
     private static void sendInterviewReminderEmailForTomorrowsInterview(List<Event> tomorrowsInterviewReminderList) {
-        System.debug('We\'re inside the email method:::::::::::::::');
         List<Messaging.SingleEmailMessage> emailList = new List<Messaging.SingleEmailMessage>();
         
         for (Event tomorrowsEvent : tomorrowsInterviewReminderList) {
@@ -56,12 +55,16 @@ public without sharing class JobInterviewReminderEmailSchedulable implements Sch
                 '</ol>'
             );
             if (tomorrowsEvent.Owner != null && tomorrowsEvent.Owner.Email != null) {
+                System.debug(JSON.serializePretty('We\'re inside of the IF statement::::::::::'));
+                System.debug(JSON.serializePretty(tomorrowsEvent.Owner));
+                System.debug(JSON.serializePretty(tomorrowsEvent.Owner.Email));
                 email.setToAddresses(new List<String> {tomorrowsEvent.Owner.Email} );
             }else {
                 continue;
             }
             emailList.add(email);
         }
-        Messaging.sendEmail(emailList);
+        List<Messaging.SendEmailResult> emailResultList = Messaging.sendEmail(emailList);
+        System.debug(emailResultList);
     }
 }
