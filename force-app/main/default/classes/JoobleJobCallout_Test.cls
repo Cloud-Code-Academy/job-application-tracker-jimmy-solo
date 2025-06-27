@@ -13,7 +13,7 @@ public with sharing class JoobleJobCallout_Test {
                                                             FROM Job_Application__c 
                                                             WHERE Company_Name__c = 'Tech Co'];
         
-        Assert.areEqual(mockJobApplicationList.size(), 1);
+        Assert.areEqual(1, mockJobApplicationList.size());
         Assert.areEqual(mockJobApplicationList[0].Company_Name__c, 'Tech Co', 'Expected Tech Co as the company name.');
         Assert.areEqual(mockJobApplicationList[0].Company_Location__c, 'Boulder, CO', 'Expected Boulder CO as the location.');
         Assert.areEqual(mockJobApplicationList[0].Salary__c, 100000, 'Expected 100000 as the salary.');

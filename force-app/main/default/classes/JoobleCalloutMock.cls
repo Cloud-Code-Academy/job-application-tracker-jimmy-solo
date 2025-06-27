@@ -15,7 +15,7 @@ public class JoobleCalloutMock implements HttpCalloutMock {
                         '"source": "Jooble",' +
                         '"type": "Full-time",' +
                         '"link": "https://example.com/job/123",' +
-                        '"company": "Tech Co",' +
+                        '"company": "Tech Co"' +
                     '}' +
                 ']' +
             '}';
