@@ -3,7 +3,7 @@
 Dive into the Salesforce platform and channel its capabilities to redefine your job application tracking experience. This capstone project, a part of Cloud Code Academy's curriculum, aims to cultivate a proficient Salesforce developer out of you.
 
 ## My Project Documentation
--[Google Doc](https://docs.google.com/document/d/1AcadrO5hAchuF4tUMKCVHdptElIDcMUa9uM7D-aAPik/edit?usp=sharing)
+- [My Google Doc - Project Documentation](https://docs.google.com/document/d/1AcadrO5hAchuF4tUMKCVHdptElIDcMUa9uM7D-aAPik/edit?usp=sharing)
 
 ## About This Project 📖
 
