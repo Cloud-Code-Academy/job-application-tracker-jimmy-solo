@@ -24,7 +24,7 @@ public with sharing class JobApplicationTriggerHelper {
 
         try {
             Database.insert(taskList, true);
-        } catch (Exception ex) {
+        } catch (DmlException ex) {
             System.debug(ex);
         }
     }
@@ -46,7 +46,7 @@ public with sharing class JobApplicationTriggerHelper {
         }
         try {
             Database.insert(taskList, true);
-        } catch (Exception ex) {
+        } catch (DmlException ex) {
             System.debug(ex);
         }
     }

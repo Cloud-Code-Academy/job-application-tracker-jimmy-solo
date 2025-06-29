@@ -19,7 +19,11 @@ public with sharing class ContactTriggerHelper {
             }
         }
         if (!updatedJobApplicationList.isEmpty()) {
-            Database.update(updatedJobApplicationList);
+            try {
+                Database.update(updatedJobApplicationList);
+            } catch (DmlException ex) {
+                System.System.debug(ex);
+            }
         }
     }
 }

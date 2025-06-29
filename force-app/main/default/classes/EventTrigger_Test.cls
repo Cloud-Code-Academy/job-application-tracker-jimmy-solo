@@ -70,7 +70,7 @@ private class EventTrigger_Test {
         Test.startTest();
             try {
                 insert interviewEvent;
-            } catch (Exception ex) {
+            } catch (DmlException ex) {
                 exceptionThrown = true;
                 System.debug(ex);
             }
